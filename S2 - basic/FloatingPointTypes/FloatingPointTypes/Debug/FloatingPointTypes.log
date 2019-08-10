@@ -1,0 +1,3 @@
+﻿  Źródło.cpp
+D:\Kursy C++\S2 - basic\FloatingPointTypes\FloatingPointTypes\Źródło.cpp(9,27): warning C4305:  "inicjowanie": obcięcie z "double" do "float"
+  FloatingPointTypes.vcxproj -> D:\Kursy C++\S2 - basic\FloatingPointTypes\Debug\FloatingPointTypes.exe

@@ -1,0 +1,6 @@
+﻿  Źródło.cpp
+D:\Kursy C++\S2 - basic\IntergerTypes\IntergerTypes\Źródło.cpp(18,37): warning C4305:  "inicjowanie": obcięcie z "__int64" do "long"
+D:\Kursy C++\S2 - basic\IntergerTypes\IntergerTypes\Źródło.cpp(18,20): warning C4309:  "inicjowanie": obcięcie stałej wartości
+D:\Kursy C++\S2 - basic\IntergerTypes\IntergerTypes\Źródło.cpp(27,38): warning C4305:  "inicjowanie": obcięcie z "__int64" do "short"
+D:\Kursy C++\S2 - basic\IntergerTypes\IntergerTypes\Źródło.cpp(27,21): warning C4309:  "inicjowanie": obcięcie stałej wartości
+  IntergerTypes.vcxproj -> D:\Kursy C++\S2 - basic\IntergerTypes\Debug\IntergerTypes.exe
