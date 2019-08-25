@@ -1,0 +1,4 @@
+﻿  main.cpp
+D:\Kursy C++\S5 - pointers and memory\ArraysAndFunctions\ArraysAndFunctions\main.cpp(9,23): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+D:\Kursy C++\S5 - pointers and memory\ArraysAndFunctions\ArraysAndFunctions\main.cpp(18,23): warning C4018:  "<": niezgodność typu ze znakiem/bez znaku
+  ArraysAndFunctions.vcxproj -> D:\Kursy C++\S5 - pointers and memory\ArraysAndFunctions\Debug\ArraysAndFunctions.exe
