@@ -1,5 +1,7 @@
-﻿  main.cpp
+﻿  Swarm.cpp
+  main.cpp
 D:\Kursy C++\S8 - Fire Particle Simulation\SDLWindow\SDLWindow\main.cpp(15,12): warning C4244:  "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
-D:\Kursy C++\S8 - Fire Particle Simulation\SDLWindow\SDLWindow\main.cpp(43,10): warning C4244:  "inicjowanie": konwersja z "double" do "int", możliwa utrata danych
-D:\Kursy C++\S8 - Fire Particle Simulation\SDLWindow\SDLWindow\main.cpp(44,10): warning C4244:  "inicjowanie": konwersja z "double" do "int", możliwa utrata danych
+D:\Kursy C++\S8 - Fire Particle Simulation\SDLWindow\SDLWindow\main.cpp(46,10): warning C4244:  "inicjowanie": konwersja z "double" do "int", możliwa utrata danych
+  Generowanie kodu...
+D:\Kursy C++\S8 - Fire Particle Simulation\SDLWindow\SDLWindow\main.cpp(47,10): warning C4244:  "inicjowanie": konwersja z "double" do "int", możliwa utrata danych
   SDLWindow.vcxproj -> D:\Kursy C++\S8 - Fire Particle Simulation\SDLWindow\Debug\SDLWindow.exe

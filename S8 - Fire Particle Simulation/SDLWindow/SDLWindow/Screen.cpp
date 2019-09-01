@@ -2,7 +2,7 @@
 
 namespace caveofprogramming {
 
-	Screen::Screen() :m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer(NULL)
+	Screen::Screen() :m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), m_buffer2(NULL)
 	{
 		
 	}
@@ -23,7 +23,7 @@ namespace caveofprogramming {
 		}
 
 		m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_PRESENTVSYNC); // tworzenie renderera
-		m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STATIC, SCREEN_WIDTH, SCREEN_HEIGHT); // tworzenie texture na podstawie rendera, foramtu, dostepu statycznego i wymiarow okna
+		m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STATIC, SCREEN_WIDTH, SCREEN_HEIGHT); // tworzenie texture na podstawie rendera, foramtu, dostepu statycznego i wymiarow okna
 
 		if (m_renderer == NULL)
 		{
@@ -40,21 +40,12 @@ namespace caveofprogramming {
 			return false;
 		}
 
-		m_buffer = new Uint32[SCREEN_HEIGHT * SCREEN_WIDTH]; // tworzenie buffora
-		memset(m_buffer, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32)); // wpisanie wartosci w adresy pamieci
+		m_buffer1 = new Uint32[SCREEN_HEIGHT * SCREEN_WIDTH]; // tworzenie buffora
+		m_buffer2 = new Uint32[SCREEN_HEIGHT * SCREEN_WIDTH];
+		memset(m_buffer1, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32)); // wpisanie wartosci w adresy pamieci
+		memset(m_buffer2, 0, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(Uint32));
 
-		//// wpisywanie w pamiec
-		//m_buffer[30000] = 0xFFFFFFFF;
-
-		//for (size_t i = 0; i < SCREEN_HEIGHT * SCREEN_WIDTH; i++)
-		//{
-		//	m_buffer[i] = 0x000000FF; // alpha, blue, green, red
-		//}
-
-		//SDL_UpdateTexture(m_texture, NULL, m_buffer, SCREEN_WIDTH * sizeof(Uint32));
-		//SDL_RenderClear(m_renderer);
-		//SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
-		//SDL_RenderPresent(m_renderer); // kolejny kurs, setting colors, zabawa tym kodem, nie tworze nowych rozwiazan dla kazdego kursu
+		
 		return true;
 	}
 
@@ -63,17 +54,16 @@ namespace caveofprogramming {
 		Uint32 color=0;
 		if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT) { return; }
 
-		
-		color = 0xFF;
-		color <<= 8;
-		color += blue;
+
+		color += red;
 		color <<= 8;
 		color += green;
 		color <<= 8;
-		color += red;
-		
+		color += blue;
+		color <<= 8;
+		color += 0xFF;
 
-		m_buffer[(y * SCREEN_WIDTH) + x] = color;
+		m_buffer1[(y * SCREEN_WIDTH) + x] = color;
 	}
 
 	bool Screen::processEvents()
@@ -91,7 +81,8 @@ namespace caveofprogramming {
 
 	void Screen::close()
 	{
-		delete[] m_buffer;
+		delete[] m_buffer1;
+		delete[] m_buffer2;
 		SDL_DestroyTexture(m_texture);
 		SDL_DestroyRenderer(m_renderer);
 		SDL_DestroyWindow(m_window);
@@ -100,10 +91,65 @@ namespace caveofprogramming {
 
 	void Screen::update()
 	{
-		SDL_UpdateTexture(m_texture, NULL, m_buffer, SCREEN_WIDTH * sizeof(Uint32));
+		SDL_UpdateTexture(m_texture, NULL, m_buffer1, SCREEN_WIDTH * sizeof(Uint32));
 		SDL_RenderClear(m_renderer);
 		SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
 		SDL_RenderPresent(m_renderer);
 	}
 
+	void Screen::boxBlur()
+	{
+		// Swapthe buffer
+		Uint32* temp = m_buffer1;
+		m_buffer1 = m_buffer2;
+		m_buffer2 = temp;
+
+		for (size_t y = 0; y < SCREEN_HEIGHT; y++)
+		{
+			for (size_t x = 0; x < SCREEN_WIDTH; x++)
+			{
+				/*
+				0 0 0
+				0 1 0
+				0 0 0
+				*/
+
+				int redTotal = 0;
+				int greenTotal = 0;
+				int blueTotal = 0;
+
+				for (int row = -1; row <= 1; row++)
+				{
+					for (int col = -1; col <= 1; col++)
+					{
+						int currentX = x + col;
+						int currentY = y + row;
+
+						if (currentX >=0 && currentX < SCREEN_WIDTH && currentY >= 0 && currentY < SCREEN_HEIGHT)
+						{
+							Uint32 color = m_buffer2[currentY * SCREEN_WIDTH + currentX];
+
+							Uint8 red = color >> 24;
+							Uint8 green = color >> 16;
+							Uint8 blue = color >> 8;
+
+							redTotal += red;
+							greenTotal += green;
+							blueTotal += blue;
+
+						}
+
+					}
+				}
+
+				Uint8 red = redTotal / 9;
+				Uint8 green = greenTotal / 9;
+				Uint8 blue = blueTotal / 9;
+
+				setPixel(x, y, red, green, blue);
+
+			}
+		}
+
+	}
 };
